@@ -1,0 +1,25 @@
+name: Dev Deploy
+
+# O gatilho dispara sempre que houver um push na branch 'develop'
+on:
+  push:
+    branches: [ develop ]
+
+# Permissões necessárias para que o GitHub Actions consiga se autenticar na AWS via OIDC
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    # Este workflow utiliza (uses) o código centralizado no arquivo terraform.yml
+    uses: ./.github/workflows/terraform.yml
+    with:
+      environment: dev
+      # ARN da Role IAM criada no console da AWS para permitir o acesso da pipeline
+      aws-assume-role-arn: "arn:aws:iam::478186672853:role/RL-github-actions-pipeine"
+      aws-region: "us-east-1"
+      # Nome do bucket S3 criado manualmente para armazenar o State File
+      aws-statefile-s3-bucket: "j3j3le-terraform-statefile"
+      # Nome da tabela DynamoDB criada manualmente para o Lock de concorrência
+      aws-lock-dynamodb-table: "j3j3le-terraform-lock"

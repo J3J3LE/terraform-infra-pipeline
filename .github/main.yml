@@ -1,0 +1,24 @@
+name: PROD DEPLOY
+
+# O gatilho dispara sempre que houver um push na branch 'main'
+on:
+  push:
+    branches: [ main ]
+
+# Permissões necessárias para autenticação via OIDC na AWS
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    # Reutiliza a lógica centralizada no arquivo terraform.yml
+    uses: ./.github/workflows/terraform.yml
+    with:
+      environment: prod
+      # O ARN da Role IAM é o mesmo, pois a conta AWS é a mesma neste exemplo
+      aws-assume-role-arn: "arn:aws:iam::478186672853:role/RL-github-actions-pipeine"
+      aws-region: "us-east-1"
+      # Utiliza o mesmo Bucket S3 e tabela DynamoDB para gerenciar os estados
+      aws-statefile-s3-bucket: "j3j3le-terraform-statefile"
+      aws-lock-dynamodb-table: "j3j3le-terraform-lock"
