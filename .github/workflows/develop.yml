@@ -1,4 +1,4 @@
-name: Dev Deploy
+name: DEV DEPLOY
 
 # O gatilho dispara sempre que houver um push na branch 'develop'
 on:
