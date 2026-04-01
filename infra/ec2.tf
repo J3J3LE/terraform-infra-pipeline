@@ -2,9 +2,7 @@ resource "aws_instance" "servidor" {
   ami           = var.ami_id
   instance_type = var.instance_type
 
-  user_data = templatefile("${path.module}/user_data.sh", {
-    ECR_REGISTRY = split("/", aws_ecr_repository.app_repo.repository_url)[0]
-  })
+  user_data = templatefile("${path.module}/user_data.sh")
 
   vpc_security_group_ids = [aws_security_group.bia-dev.id]
   iam_instance_profile   = aws_iam_instance_profile.ssm_profile.name
