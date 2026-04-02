@@ -15,3 +15,7 @@ variable "volume_size" {
 variable "tags_ec2_name" {
   type = string
 }
+
+variable "environment" {
+  type = string
+}
