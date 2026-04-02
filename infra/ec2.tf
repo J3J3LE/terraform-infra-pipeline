@@ -4,11 +4,15 @@ resource "aws_instance" "servidor" {
 
   user_data = file("user_data.sh")
 
-  vpc_security_group_ids = [aws_security_group.bia-dev.id]
+  vpc_security_group_ids = [aws_security_group.bia.id]
   iam_instance_profile   = aws_iam_instance_profile.ssm_profile.name
 
   root_block_device {
     volume_size = var.volume_size
     volume_type = "gp3"
+  }
+
+  tags = {
+    Name = var.tags_ec2_name
   }
 }
